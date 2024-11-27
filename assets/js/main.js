@@ -37,37 +37,40 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const particleCount = 300; // Increase the number of particles
+    const particleCount = 150; // Increase the number of particles
     const particles = [];
 
     // Generate particles
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
+
+        // Random initial positions
         particle.style.top = Math.random() * 100 + 'vh';
         particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDuration = Math.random() * 3 + 2 + 's'; // Faster floating
-        particle.style.animationDelay = Math.random() * 1.5 + 's';
-        particle.dataset.speedX = Math.random() * 2 - 1; // Horizontal movement speed
-        particle.dataset.speedY = Math.random() * 2 - 1; // Vertical movement speed
+
+        // Random movement speed multipliers
+        particle.dataset.offsetX = Math.random() * 2 - 1; // -1 to 1
+        particle.dataset.offsetY = Math.random() * 2 - 1; // -1 to 1
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Add interactivity
-    document.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
+    // Add interactivity for mouse movement
+    document.addEventListener('mousemove', (event) => {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
 
-        particles.forEach(particle => {
-            const speedX = parseFloat(particle.dataset.speedX);
-            const speedY = parseFloat(particle.dataset.speedY);
+        particles.forEach((particle) => {
+            const offsetX = parseFloat(particle.dataset.offsetX) * 10; // Adjust movement intensity
+            const offsetY = parseFloat(particle.dataset.offsetY) * 10;
 
-            const offsetX = (mouseX - 0.5) * speedX * 50;
-            const offsetY = (mouseY - 0.5) * speedY * 50;
+            // Dynamically calculate particle positions based on mouse
+            const particleX = mouseX / window.innerWidth * offsetX;
+            const particleY = mouseY / window.innerHeight * offsetY;
 
-            particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            particle.style.transform = `translate(${particleX}px, ${particleY}px)`;
         });
     });
 });
