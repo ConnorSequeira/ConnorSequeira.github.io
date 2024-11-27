@@ -1148,7 +1148,7 @@ input, select, textarea {
 
 /* BG */
 
-	#bg {
+/*	#bg {
 		-moz-transform: scale(1.0);
 		-webkit-transform: scale(1.0);
 		-ms-transform: scale(1.0);
@@ -1221,7 +1221,7 @@ input, select, textarea {
 		body.is-preload #bg:before {
 			background-color: #000000;
 		}
-
+*/
 /* Wrapper */
 
 	#wrapper {
