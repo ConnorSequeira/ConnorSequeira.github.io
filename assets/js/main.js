@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const particleCount = 150; // Increase the number of particles
+    const particleCount = 3000; // Increase the number of particles
     const particles = [];
 
     // Generate particles
