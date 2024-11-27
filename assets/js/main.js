@@ -30,6 +30,37 @@
 				$body.removeClass('is-preload');
 			}, 100);
 		});
+// Select the background container
+const background = document.querySelector('.background');
+
+// Generate random particles
+for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    // Set random position
+    particle.style.top = Math.random() * 100 + 'vh';
+    particle.style.left = Math.random() * 100 + 'vw';
+    
+    // Set random animation duration and delay
+    particle.style.animationDuration = Math.random() * 5 + 3 + 's';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+
+    background.appendChild(particle);
+}
+
+// Add interactivity to move particles on hover
+document.addEventListener('mousemove', (e) => {
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach(particle => {
+        const dx = (e.clientX / window.innerWidth) - 0.5;
+        const dy = (e.clientY / window.innerHeight) - 0.5;
+        const moveX = dx * 50;
+        const moveY = dy * 50;
+
+        particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+});
 
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
