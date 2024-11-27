@@ -37,9 +37,10 @@ ol, ul {
 	list-style: none;
 }
 
-.custom-icon {
-  font-size: 300px; /* Custom size */
+.logo .icon.fas.fa-cogs {
+  font-size: 500px;  /* Adjust the size as needed */
 }
+
 
 
 blockquote, q {
