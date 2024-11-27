@@ -485,7 +485,7 @@ input, select, textarea {
 			-webkit-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
-			color: #ffff00;
+			color: #ffffff;
 			cursor: pointer;
 			display: inline-block;
 			font-size: 0.8rem;
@@ -616,7 +616,7 @@ input, select, textarea {
 			line-height: 1;
 			text-transform: none !important;
 			font-family: 'Font Awesome 5 Free';
-			font-weight: 400;
+			font-weight: 4000;
 		}
 
 		.icon > .label {
