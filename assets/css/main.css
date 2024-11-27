@@ -52,28 +52,26 @@ ol, ul {
     z-index: -1; /* Keeps it behind the content */
 }
 
-/* Updated Particle Styles */
+/* Updated Particle Styles with Depth */
 .particle {
     position: absolute;
-    width: 5px;
-    height: 5px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5), 0 0 12px rgba(255, 255, 255, 0.3);
-    pointer-events: none; /* Ensure particles don't block mouse interaction */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.3);
+    pointer-events: none; /* Ensure particles don’t block mouse interaction */
+    transition: transform 0.1s ease-out; /* Smooth return to original position */
 }
 
-/* Particle floating animation (optional) */
+/* Particle floating animation for natural movement */
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
-        opacity: 0.8;
     }
     50% {
-        transform: translateY(-15px);
-        opacity: 1;
+        transform: translateY(-10px);
     }
 }
+
 
 
 
