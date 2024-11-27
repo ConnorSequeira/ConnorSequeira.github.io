@@ -30,37 +30,48 @@
 				$body.removeClass('is-preload');
 			}, 100);
 		});
-// Select the background container
-const background = document.querySelector('.background');
+document.addEventListener("DOMContentLoaded", () => {
+    const background = document.querySelector('.background');
+    if (!background) {
+        console.error("Background container not found!");
+        return;
+    }
 
-// Generate random particles
-for (let i = 0; i < 50; i++) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-    
-    // Set random position
-    particle.style.top = Math.random() * 100 + 'vh';
-    particle.style.left = Math.random() * 100 + 'vw';
-    
-    // Set random animation duration and delay
-    particle.style.animationDuration = Math.random() * 5 + 3 + 's';
-    particle.style.animationDelay = Math.random() * 2 + 's';
+    const particleCount = 150; // Increase the number of particles
+    const particles = [];
 
-    background.appendChild(particle);
-}
+    // Generate particles
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.top = Math.random() * 100 + 'vh';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDuration = Math.random() * 3 + 2 + 's'; // Faster floating
+        particle.style.animationDelay = Math.random() * 1.5 + 's';
+        particle.dataset.speedX = Math.random() * 2 - 1; // Horizontal movement speed
+        particle.dataset.speedY = Math.random() * 2 - 1; // Vertical movement speed
 
-// Add interactivity to move particles on hover
-document.addEventListener('mousemove', (e) => {
-    const particles = document.querySelectorAll('.particle');
-    particles.forEach(particle => {
-        const dx = (e.clientX / window.innerWidth) - 0.5;
-        const dy = (e.clientY / window.innerHeight) - 0.5;
-        const moveX = dx * 50;
-        const moveY = dy * 50;
+        particles.push(particle);
+        background.appendChild(particle);
+    }
 
-        particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    // Add interactivity
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+
+        particles.forEach(particle => {
+            const speedX = parseFloat(particle.dataset.speedX);
+            const speedY = parseFloat(particle.dataset.speedY);
+
+            const offsetX = (mouseX - 0.5) * speedX * 50;
+            const offsetY = (mouseY - 0.5) * speedY * 50;
+
+            particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        });
     });
 });
+
 
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
