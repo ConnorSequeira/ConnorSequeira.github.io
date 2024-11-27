@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const particleCount = 150; // Increase the number of particles
+    const particleCount = 200; // Increase the number of particles
     const particles = [];
 
     // Generate particles
@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const mouseY = event.clientY;
 
         particles.forEach((particle) => {
-            const offsetX = parseFloat(particle.dataset.offsetX) * 10; // Adjust movement intensity
-            const offsetY = parseFloat(particle.dataset.offsetY) * 10;
+            const offsetX = parseFloat(particle.dataset.offsetX) * 50; // Adjust movement intensity
+            const offsetY = parseFloat(particle.dataset.offsetY) * 50;
 
             // Dynamically calculate particle positions based on mouse
             const particleX = mouseX / window.innerWidth * offsetX;
