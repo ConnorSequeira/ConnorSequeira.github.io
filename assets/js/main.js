@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const mouseY = event.clientY;
 
         particles.forEach((particle) => {
-            const offsetX = parseFloat(particle.dataset.offsetX) * 50; // Adjust movement intensity
-            const offsetY = parseFloat(particle.dataset.offsetY) * 50;
+            const offsetX = parseFloat(particle.dataset.offsetX) * 500; // Adjust movement intensity
+            const offsetY = parseFloat(particle.dataset.offsetY) * 500;
 
             // Dynamically calculate particle positions based on mouse
             const particleX = mouseX / window.innerWidth * offsetX;
