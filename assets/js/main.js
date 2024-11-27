@@ -37,43 +37,62 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const particleCount = 200; // Increase the number of particles
+    const particleCount = 250; // Total number of particles
     const particles = [];
 
-    // Generate particles
+    // Generate particles with depth
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
 
-        // Random initial positions
+        // Random depth level (nearer particles are larger and brighter)
+        const depth = Math.random(); // 0 (far) to 1 (near)
+        particle.dataset.depth = depth;
+
+        // Assign initial styles
         particle.style.top = Math.random() * 100 + 'vh';
         particle.style.left = Math.random() * 100 + 'vw';
-
-        // Random movement speed multipliers
-        particle.dataset.offsetX = Math.random() * 2 - 1; // -1 to 1
-        particle.dataset.offsetY = Math.random() * 2 - 1; // -1 to 1
+        particle.style.width = `${3 + depth * 4}px`; // Bigger particles for nearer depth
+        particle.style.height = `${3 + depth * 4}px`;
+        particle.style.opacity = `${0.4 + depth * 0.6}`; // Brighter for nearer depth
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Add interactivity for mouse movement
+    // Add mouse interactivity (localized effect)
     document.addEventListener('mousemove', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
+        const interactionRadius = 150; // Radius of mouse effect
 
         particles.forEach((particle) => {
-            const offsetX = parseFloat(particle.dataset.offsetX) * 500; // Adjust movement intensity
-            const offsetY = parseFloat(particle.dataset.offsetY) * 500;
+            const rect = particle.getBoundingClientRect();
+            const particleX = rect.left + rect.width / 2;
+            const particleY = rect.top + rect.height / 2;
 
-            // Dynamically calculate particle positions based on mouse
-            const particleX = mouseX / window.innerWidth * offsetX;
-            const particleY = mouseY / window.innerHeight * offsetY;
+            // Calculate distance from the mouse
+            const dx = particleX - mouseX;
+            const dy = particleY - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-            particle.style.transform = `translate(${particleX}px, ${particleY}px)`;
+            if (distance < interactionRadius) {
+                // Scale effect by proximity
+                const effectStrength = (interactionRadius - distance) / interactionRadius;
+                const depth = parseFloat(particle.dataset.depth);
+
+                const offsetX = dx * effectStrength * depth * 2; // Stronger effect for nearer particles
+                const offsetY = dy * effectStrength * depth * 2;
+
+                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            } else {
+                // Reset transform for particles outside interaction radius
+                particle.style.transform = '';
+            }
         });
     });
 });
+
 
 
 	// Fix: Flexbox min-height bug on IE.
