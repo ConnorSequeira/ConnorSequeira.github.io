@@ -75,23 +75,6 @@ ol, ul {
 
 
 
-/* Particle floating animation */
-@keyframes float {
-    0% {
-        transform: translateY(0) translateX(0);
-        opacity: 0.5;
-    }
-    50% {
-        transform: translateY(-50px) translateX(50px);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100px) translateX(0);
-        opacity: 0.5;
-    }
-}
-
-
 blockquote, q {
 	quotes: none;
 }
