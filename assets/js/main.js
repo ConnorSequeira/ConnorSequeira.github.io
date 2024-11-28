@@ -93,6 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+const sound = new Howl({
+    src: ['https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'], // Replace this with the actual ambient sound URL
+    autoplay: true,
+    loop: true,
+    volume: 0.2
+});
 
 
 	// Fix: Flexbox min-height bug on IE.
