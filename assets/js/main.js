@@ -87,17 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
                 // Reset transform for particles outside interaction radius
-              //  particle.style.transform = '';
+                particle.style.transform = '';
             }
         });
     });
-});
-
-const sound = new Howl({
-    src: ['https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'], // Replace this with the actual ambient sound URL
-    autoplay: true,
-    loop: true,
-    volume: 0.2
 });
 
 
