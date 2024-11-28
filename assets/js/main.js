@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
                 // Reset transform for particles outside interaction radius
-                particle.style.transform = '';
+              //  particle.style.transform = '';
             }
         });
     });
