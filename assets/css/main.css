@@ -48,18 +48,35 @@ ol, ul {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #111 20%, #000 80%);
+    background: radial-gradient(circle at center, #111 20%, #000 80%);
+    animation: backgroundMove 10s infinite alternate; /* Smooth background movement */
     z-index: -1; /* Keeps it behind the content */
+}
+
+/* Background movement animation */
+@keyframes backgroundMove {
+    0% {
+        background-position: center;
+    }
+    50% {
+        background-position: 60% 40%;
+    }
+    100% {
+        background-position: 40% 60%;
+    }
 }
 
 /* Updated Particle Styles with Depth */
 .particle {
     position: absolute;
+    width: 8px;
+    height: 8px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.3);
     pointer-events: none; /* Ensure particles don’t block mouse interaction */
-    transition: transform 0.1s ease-out; /* Smooth return to original position */
+    transition: transform 0.1s ease-out, opacity 0.5s ease-in-out; /* Smooth transformations */
+    animation: float 5s infinite ease-in-out; /* Smooth particle floating */
 }
 
 /* Particle floating animation for natural movement */
@@ -72,6 +89,33 @@ ol, ul {
     }
 }
 
+/* Add particle fade-in/out for dynamic effects */
+@keyframes particleFade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Extra particle animation for rotation */
+@keyframes particleRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Applying particle rotation for depth */
+.particle-depth {
+    animation: float 5s infinite ease-in-out, particleRotate 10s infinite linear;
+}
 
 
 
