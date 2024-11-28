@@ -40,7 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const particleCount = 250; // Total number of particles
     const particles = [];
 
-    // Generate particles with depth
+    // Helper function for random values
+    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    // Generate particles with depth and movement
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
@@ -50,17 +53,52 @@ document.addEventListener("DOMContentLoaded", () => {
         particle.dataset.depth = depth;
 
         // Assign initial styles
-        particle.style.top = Math.random() * 100 + 'vh';
-        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.top = randomInRange(0, 100) + 'vh';
+        particle.style.left = randomInRange(0, 100) + 'vw';
         particle.style.width = `${3 + depth * 4}px`; // Bigger particles for nearer depth
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`; // Brighter for nearer depth
+
+        // Store particle movement properties
+        particle.dataset.speedX = randomInRange(-0.05, 0.05); // Horizontal drift
+        particle.dataset.speedY = randomInRange(-0.1, 0.1); // Vertical drift
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Add mouse interactivity (localized effect)
+    // Continuous particle movement
+    function updateParticles() {
+        particles.forEach((particle) => {
+            // Parse particle's movement properties
+            const rect = particle.getBoundingClientRect();
+            const depth = parseFloat(particle.dataset.depth);
+            let x = parseFloat(particle.style.left);
+            let y = parseFloat(particle.style.top);
+
+            // Drift movement
+            const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
+            const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
+
+            // Update position
+            x += speedX;
+            y += speedY;
+
+            // Wrap around screen edges
+            if (x > 100) x = 0;
+            if (x < 0) x = 100;
+            if (y > 100) y = 0;
+            if (y < 0) y = 100;
+
+            particle.style.left = x + 'vw';
+            particle.style.top = y + 'vh';
+        });
+
+        // Schedule the next update
+        requestAnimationFrame(updateParticles);
+    }
+
+    // Mouse interactivity (localized effect)
     document.addEventListener('mousemove', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -91,7 +129,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // Start the particle movement
+    updateParticles();
 });
+
 
 
 	// Fix: Flexbox min-height bug on IE.
