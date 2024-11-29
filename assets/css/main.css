@@ -41,31 +41,28 @@ ol, ul {
   font-size: 500px;  /* Adjust the size as needed */
 }
 
-/* Background container */
 .background {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
+    width: 100vw;
+    height: 100vh;
     background: radial-gradient(circle, #111 20%, #000 80%);
-    z-index: -1; /* Keeps it behind the content */
-    overflow: hidden; /* Prevent particles from overflowing outside the viewport */
-    pointer-events: none; /* Disable interactions with the background */
-    display: block;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Particle styles */
 .particle {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.3);
-    pointer-events: none; /* Ensure particles don’t block mouse interaction */
-    transition: transform 0.1s ease-out; /* Smooth return to original position */
+    pointer-events: none;
+    transition: transform 0.1s ease-out;
+    animation: float 3s infinite ease-in-out;
 }
 
-/* Particle floating animation for natural movement */
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
