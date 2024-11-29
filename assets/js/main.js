@@ -55,17 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
         particle.dataset.depth = depth;
 
         // Initially place all particles in a tight bundle (center of the viewport)
-        particle.style.top = `${centerY}px`;
-        particle.style.left = `${centerX}px`;
-
-        // Define particle appearance
+        particle.style.position = 'absolute';
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
-
-        // Random drift values for later
-        particle.dataset.speedX = randomInRange(-0.05, 0.05);
-        particle.dataset.speedY = randomInRange(-0.1, 0.1);
+        particle.style.transition = 'left 2s ease-out, top 2s ease-out';
+        particle.style.left = `${50}%`; // Center horizontally
+        particle.style.top = `${50}%`; // Center vertically
 
         particles.push(particle);
         background.appendChild(particle);
@@ -77,10 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const randomX = randomInRange(0, 100); // Random position across the viewport
             const randomY = randomInRange(0, 100);
 
-            // Move particles from center to random positions with a smooth animation
-            particle.style.transition = 'left 2s ease-out, top 2s ease-out';
-            particle.style.left = randomX + 'vw';
-            particle.style.top = randomY + 'vh';
+            // Disperse particles from the center to random positions
+            particle.style.left = `${randomX}vw`;
+            particle.style.top = `${randomY}vh`;
         });
 
         // Revert to normal behavior after dispersal animation completes
@@ -89,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 particle.style.transition = 'transform 0.2s ease-out';
             });
             startParticleUpdates();
-        }, 2000); // Matches the dispersal duration
+        }, 2000); // Matches dispersal duration
     }
 
     // Continuous particle movement
@@ -99,14 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 let x = parseFloat(particle.style.left);
                 let y = parseFloat(particle.style.top);
                 const depth = parseFloat(particle.dataset.depth);
-                const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
-                const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
+                const speedX = randomInRange(-0.05, 0.05) * (1 + depth);
+                const speedY = randomInRange(-0.1, 0.1) * (1 + depth);
 
                 x = (x + speedX + 100) % 100; // Wrap horizontally
                 y = (y + speedY + 100) % 100; // Wrap vertically
 
-                particle.style.left = x + 'vw';
-                particle.style.top = y + 'vh';
+                particle.style.left = `${x}vw`;
+                particle.style.top = `${y}vh`;
             });
             requestAnimationFrame(updateParticles);
         }
@@ -181,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Start with particles bundled and disperse them
     disperseParticles();
 });
+
 
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
