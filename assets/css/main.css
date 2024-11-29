@@ -59,7 +59,7 @@ ol, ul {
     border-radius: 50%;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.3);
     pointer-events: none;
-    transition: transform 0.2s ease-out, left 2s ease-out, top 2s ease-out;
+    transition: transform 0.2s ease-out, left 2s ease-out, top 2s ease-out; /* Opening animation transition */
     animation: float 4s infinite ease-in-out;
 }
 
@@ -71,7 +71,6 @@ ol, ul {
         transform: translateY(-5px);
     }
 }
-
 
 blockquote, q {
 	quotes: none;
