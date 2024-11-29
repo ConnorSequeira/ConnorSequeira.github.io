@@ -40,54 +40,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const particleCount = 250;
     const particles = [];
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
 
     // Helper for random values
     const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
-    // Create particles in a tight cluster
+    // Create particles
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
         const depth = Math.random();
 
         particle.dataset.depth = depth;
-
-        // Initially place all particles in a tight bundle (center of the viewport)
-        particle.style.position = 'absolute';
+        particle.style.top = '50%';  // Start tightly bundled in the center
+        particle.style.left = '50%'; // Start tightly bundled in the center
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
-        particle.style.transition = 'left 2s ease-out, top 2s ease-out'; // Initial transition
-        particle.style.left = `${centerX}px`; // Center horizontally
-        particle.style.top = `${centerY}px`; // Center vertically
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Disperse particles after page load with an opening animation
+    // Disperse particles with smooth animation after page load
     function disperseParticles() {
         particles.forEach((particle) => {
             const randomX = randomInRange(0, 100); // Random position across the viewport
             const randomY = randomInRange(0, 100);
 
-            // Smoothly disperse particles from the center to random positions
+            // Disperse particles with a smooth transition from the center
+            particle.style.transition = 'left 2s ease-out, top 2s ease-out'; // Adding transition
             particle.style.left = `${randomX}vw`;
             particle.style.top = `${randomY}vh`;
         });
 
-        // Revert to normal behavior after dispersal animation completes
+        // Resume normal behavior after dispersal animation completes
         setTimeout(() => {
             particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.2s ease-out'; // Resume normal behavior after dispersal
+                particle.style.transition = 'transform 0.2s ease-out'; // Normal transitions after dispersal
             });
             startParticleUpdates();
-        }, 2000); // Matches the dispersal duration
+        }, 2000); // Duration of the dispersal
     }
 
-    // Continuous particle movement (drifting)
+    // Continuous movement of particles after initial dispersal
     function startParticleUpdates() {
         function updateParticles() {
             particles.forEach((particle) => {
