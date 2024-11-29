@@ -59,21 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
-        particle.style.transition = 'left 2s ease-out, top 2s ease-out';
-        particle.style.left = `${50}%`; // Center horizontally
-        particle.style.top = `${50}%`; // Center vertically
+        particle.style.transition = 'left 2s ease-out, top 2s ease-out'; // Initial transition
+        particle.style.left = `${centerX}px`; // Center horizontally
+        particle.style.top = `${centerY}px`; // Center vertically
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Disperse particles after page load
+    // Disperse particles after page load with an opening animation
     function disperseParticles() {
         particles.forEach((particle) => {
             const randomX = randomInRange(0, 100); // Random position across the viewport
             const randomY = randomInRange(0, 100);
 
-            // Disperse particles from the center to random positions
+            // Smoothly disperse particles from the center to random positions
             particle.style.left = `${randomX}vw`;
             particle.style.top = `${randomY}vh`;
         });
@@ -81,13 +81,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Revert to normal behavior after dispersal animation completes
         setTimeout(() => {
             particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.2s ease-out';
+                particle.style.transition = 'transform 0.2s ease-out'; // Resume normal behavior after dispersal
             });
             startParticleUpdates();
-        }, 2000); // Matches dispersal duration
+        }, 2000); // Matches the dispersal duration
     }
 
-    // Continuous particle movement
+    // Continuous particle movement (drifting)
     function startParticleUpdates() {
         function updateParticles() {
             particles.forEach((particle) => {
