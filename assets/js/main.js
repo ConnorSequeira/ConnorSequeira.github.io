@@ -37,100 +37,95 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const particleCount = 250; // Total number of particles
+    const particleCount = 250;
     const particles = [];
 
-    // Helper function for random values
+    // Helper for random values
     const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
-    // Generate particles with depth and movement
+    // Create particles
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
+        const depth = Math.random();
 
-        // Random depth level (nearer particles are larger and brighter)
-        const depth = Math.random(); // 0 (far) to 1 (near)
         particle.dataset.depth = depth;
-
-        // Assign initial styles
         particle.style.top = randomInRange(0, 100) + 'vh';
         particle.style.left = randomInRange(0, 100) + 'vw';
-        particle.style.width = `${3 + depth * 4}px`; // Bigger particles for nearer depth
+        particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
-        particle.style.opacity = `${0.4 + depth * 0.6}`; // Brighter for nearer depth
-
-        // Store particle movement properties
-        particle.dataset.speedX = randomInRange(-0.05, 0.05); // Horizontal drift
-        particle.dataset.speedY = randomInRange(-0.1, 0.1); // Vertical drift
+        particle.style.opacity = `${0.4 + depth * 0.6}`;
+        particle.dataset.speedX = randomInRange(-0.05, 0.05);
+        particle.dataset.speedY = randomInRange(-0.1, 0.1);
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Continuous particle movement
     function updateParticles() {
         particles.forEach((particle) => {
-            // Parse particle's movement properties
-            const rect = particle.getBoundingClientRect();
-            const depth = parseFloat(particle.dataset.depth);
             let x = parseFloat(particle.style.left);
             let y = parseFloat(particle.style.top);
-
-            // Drift movement
+            const depth = parseFloat(particle.dataset.depth);
             const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
             const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
 
-            // Update position
-            x += speedX;
-            y += speedY;
-
-            // Wrap around screen edges
-            if (x > 100) x = 0;
-            if (x < 0) x = 100;
-            if (y > 100) y = 0;
-            if (y < 0) y = 100;
+            x = (x + speedX + 100) % 100; // Wrap horizontally
+            y = (y + speedY + 100) % 100; // Wrap vertically
 
             particle.style.left = x + 'vw';
             particle.style.top = y + 'vh';
         });
-
-        // Schedule the next update
         requestAnimationFrame(updateParticles);
     }
 
-    // Mouse interactivity (localized effect)
     document.addEventListener('mousemove', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
-        const interactionRadius = 150; // Radius of mouse effect
+        const interactionRadius = 150;
 
         particles.forEach((particle) => {
             const rect = particle.getBoundingClientRect();
             const particleX = rect.left + rect.width / 2;
             const particleY = rect.top + rect.height / 2;
 
-            // Calculate distance from the mouse
             const dx = particleX - mouseX;
             const dy = particleY - mouseY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < interactionRadius) {
-                // Scale effect by proximity
                 const effectStrength = (interactionRadius - distance) / interactionRadius;
                 const depth = parseFloat(particle.dataset.depth);
-
-                const offsetX = dx * effectStrength * depth * 2; // Stronger effect for nearer particles
+                const offsetX = dx * effectStrength * depth * 2;
                 const offsetY = dy * effectStrength * depth * 2;
-
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
-                // Reset transform for particles outside interaction radius
                 particle.style.transform = '';
             }
         });
     });
 
-    // Start the particle movement
+    document.addEventListener('click', (event) => {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        const interactionRadius = 150;
+
+        particles.forEach((particle) => {
+            const rect = particle.getBoundingClientRect();
+            const particleX = rect.left + rect.width / 2;
+            const particleY = rect.top + rect.height / 2;
+
+            const dx = particleX - mouseX;
+            const dy = particleY - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < interactionRadius) {
+                particle.style.left = mouseX + 'px';
+                particle.style.top = mouseY + 'px';
+            }
+        });
+    });
+
     updateParticles();
 });
 
