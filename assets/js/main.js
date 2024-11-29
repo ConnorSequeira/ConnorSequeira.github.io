@@ -30,6 +30,7 @@
 				$body.removeClass('is-preload');
 			}, 100);
 		});
+//Particle interaction
 document.addEventListener("DOMContentLoaded", () => {
     const background = document.querySelector('.background');
     if (!background) {
@@ -52,11 +53,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const depth = Math.random();
 
         particle.dataset.depth = depth;
+
+        // Initially place all particles in a tight bundle (center of the viewport)
         particle.style.top = `${centerY}px`;
         particle.style.left = `${centerX}px`;
+
+        // Define particle appearance
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
+
+        // Random drift values for later
         particle.dataset.speedX = randomInRange(-0.05, 0.05);
         particle.dataset.speedY = randomInRange(-0.1, 0.1);
 
@@ -70,21 +77,22 @@ document.addEventListener("DOMContentLoaded", () => {
             const randomX = randomInRange(0, 100); // Random position across the viewport
             const randomY = randomInRange(0, 100);
 
-            particle.style.transition = 'left 1s ease-out, top 1s ease-out';
+            // Move particles from center to random positions with a smooth animation
+            particle.style.transition = 'left 2s ease-out, top 2s ease-out';
             particle.style.left = randomX + 'vw';
             particle.style.top = randomY + 'vh';
         });
 
-        // Revert to normal behavior after dispersal
+        // Revert to normal behavior after dispersal animation completes
         setTimeout(() => {
             particles.forEach((particle) => {
                 particle.style.transition = 'transform 0.2s ease-out';
             });
             startParticleUpdates();
-        }, 1000); // Match dispersal duration
+        }, 2000); // Matches the dispersal duration
     }
 
-    // Continuous movement of particles
+    // Continuous particle movement
     function startParticleUpdates() {
         function updateParticles() {
             particles.forEach((particle) => {
@@ -170,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
     });
 
-    // Start dispersal animation
+    // Start with particles bundled and disperse them
     disperseParticles();
 });
 
