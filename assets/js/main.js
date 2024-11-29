@@ -97,13 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const effectStrength = (interactionRadius - distance) / interactionRadius;
                 const depth = parseFloat(particle.dataset.depth);
 
-                const acceleration = Math.pow(effectStrength, 1.5); // Smooth acceleration
-                const offsetX = dx * acceleration * depth * 2;
-                const offsetY = dy * acceleration * depth * 2;
+                const offsetX = dx * effectStrength * depth * 2; // Stronger dispersion for nearer particles
+                const offsetY = dy * effectStrength * depth * 2;
+
                 particle.style.transition = 'transform 0.1s ease-out';
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
-                particle.style.transition = 'transform 0.3s ease-in';
+                particle.style.transition = 'transform 0.2s ease-in';
                 particle.style.transform = '';
             }
         });
@@ -125,30 +125,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (distance < interactionRadius) {
                 const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 0.4 + depth * 0.6; // Pull closer proportional to depth
+                const pullStrength = 0.5 + depth * 0.5; // Pull closer proportional to depth
                 const offsetX = dx * -pullStrength;
                 const offsetY = dy * -pullStrength;
 
-                particle.style.transition = 'left 0.5s ease, top 0.5s ease';
+                particle.style.transition = 'left 0.3s ease, top 0.3s ease';
                 particle.style.left = `${(mouseX / window.innerWidth) * 100}%`;
                 particle.style.top = `${(mouseY / window.innerHeight) * 100}%`;
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             }
         });
 
-        // Reset positions after 1s
+        // Reset positions quickly after 0.5s
         setTimeout(() => {
             particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.3s ease-in';
+                particle.style.transition = 'transform 0.2s ease-in';
                 particle.style.transform = '';
             });
-        }, 1000);
+        }, 500);
     });
 
     updateParticles();
 });
-
-
 
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
