@@ -39,19 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const particleCount = 250;
     const particles = [];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
     // Helper for random values
     const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
-    // Create particles
+    // Create particles in a tight cluster
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
         const depth = Math.random();
 
         particle.dataset.depth = depth;
-        particle.style.top = randomInRange(0, 100) + 'vh';
-        particle.style.left = randomInRange(0, 100) + 'vw';
+        particle.style.top = `${centerY}px`;
+        particle.style.left = `${centerX}px`;
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
@@ -62,23 +64,48 @@ document.addEventListener("DOMContentLoaded", () => {
         background.appendChild(particle);
     }
 
-    function updateParticles() {
+    // Disperse particles after page load
+    function disperseParticles() {
         particles.forEach((particle) => {
-            let x = parseFloat(particle.style.left);
-            let y = parseFloat(particle.style.top);
-            const depth = parseFloat(particle.dataset.depth);
-            const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
-            const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
+            const randomX = randomInRange(0, 100); // Random position across the viewport
+            const randomY = randomInRange(0, 100);
 
-            x = (x + speedX + 100) % 100; // Wrap horizontally
-            y = (y + speedY + 100) % 100; // Wrap vertically
-
-            particle.style.left = x + 'vw';
-            particle.style.top = y + 'vh';
+            particle.style.transition = 'left 1s ease-out, top 1s ease-out';
+            particle.style.left = randomX + 'vw';
+            particle.style.top = randomY + 'vh';
         });
-        requestAnimationFrame(updateParticles);
+
+        // Revert to normal behavior after dispersal
+        setTimeout(() => {
+            particles.forEach((particle) => {
+                particle.style.transition = 'transform 0.2s ease-out';
+            });
+            startParticleUpdates();
+        }, 1000); // Match dispersal duration
     }
 
+    // Continuous movement of particles
+    function startParticleUpdates() {
+        function updateParticles() {
+            particles.forEach((particle) => {
+                let x = parseFloat(particle.style.left);
+                let y = parseFloat(particle.style.top);
+                const depth = parseFloat(particle.dataset.depth);
+                const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
+                const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
+
+                x = (x + speedX + 100) % 100; // Wrap horizontally
+                y = (y + speedY + 100) % 100; // Wrap vertically
+
+                particle.style.left = x + 'vw';
+                particle.style.top = y + 'vh';
+            });
+            requestAnimationFrame(updateParticles);
+        }
+        updateParticles();
+    }
+
+    // Mouse interaction: Dispersion effect
     document.addEventListener('mousemove', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -100,15 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const offsetX = dx * effectStrength * depth * 2; // Stronger dispersion for nearer particles
                 const offsetY = dy * effectStrength * depth * 2;
 
-                particle.style.transition = 'transform 0.1s ease-out';
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
-                particle.style.transition = 'transform 0.2s ease-in';
                 particle.style.transform = '';
             }
         });
     });
 
+    // Mouse click interaction: Attraction effect
     document.addEventListener('click', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -139,13 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Reset positions quickly after 0.5s
         setTimeout(() => {
             particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.2s ease-in';
                 particle.style.transform = '';
             });
         }, 500);
     });
 
-    updateParticles();
+    // Start dispersal animation
+    disperseParticles();
 });
 
 	// Fix: Flexbox min-height bug on IE.
