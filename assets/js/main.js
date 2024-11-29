@@ -51,59 +51,35 @@ document.addEventListener("DOMContentLoaded", () => {
         const depth = Math.random();
 
         particle.dataset.depth = depth;
-        particle.style.top = '50%';  // Start tightly bundled in the center
-        particle.style.left = '50%'; // Start tightly bundled in the center
+        particle.style.top = randomInRange(0, 100) + 'vh';
+        particle.style.left = randomInRange(0, 100) + 'vw';
         particle.style.width = `${3 + depth * 4}px`;
         particle.style.height = `${3 + depth * 4}px`;
         particle.style.opacity = `${0.4 + depth * 0.6}`;
+        particle.dataset.speedX = randomInRange(-0.05, 0.05);
+        particle.dataset.speedY = randomInRange(-0.1, 0.1);
 
         particles.push(particle);
         background.appendChild(particle);
     }
 
-    // Disperse particles with smooth animation after page load
-    function disperseParticles() {
+    function updateParticles() {
         particles.forEach((particle) => {
-            const randomX = randomInRange(0, 100); // Random position across the viewport
-            const randomY = randomInRange(0, 100);
+            let x = parseFloat(particle.style.left);
+            let y = parseFloat(particle.style.top);
+            const depth = parseFloat(particle.dataset.depth);
+            const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
+            const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
 
-            // Disperse particles with a smooth transition from the center
-            particle.style.transition = 'left 2s ease-out, top 2s ease-out'; // Adding transition
-            particle.style.left = `${randomX}vw`;
-            particle.style.top = `${randomY}vh`;
+            x = (x + speedX + 100) % 100; // Wrap horizontally
+            y = (y + speedY + 100) % 100; // Wrap vertically
+
+            particle.style.left = x + 'vw';
+            particle.style.top = y + 'vh';
         });
-
-        // Resume normal behavior after dispersal animation completes
-        setTimeout(() => {
-            particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.2s ease-out'; // Normal transitions after dispersal
-            });
-            startParticleUpdates();
-        }, 2000); // Duration of the dispersal
+        requestAnimationFrame(updateParticles);
     }
 
-    // Continuous movement of particles after initial dispersal
-    function startParticleUpdates() {
-        function updateParticles() {
-            particles.forEach((particle) => {
-                let x = parseFloat(particle.style.left);
-                let y = parseFloat(particle.style.top);
-                const depth = parseFloat(particle.dataset.depth);
-                const speedX = randomInRange(-0.05, 0.05) * (1 + depth);
-                const speedY = randomInRange(-0.1, 0.1) * (1 + depth);
-
-                x = (x + speedX + 100) % 100; // Wrap horizontally
-                y = (y + speedY + 100) % 100; // Wrap vertically
-
-                particle.style.left = `${x}vw`;
-                particle.style.top = `${y}vh`;
-            });
-            requestAnimationFrame(updateParticles);
-        }
-        updateParticles();
-    }
-
-    // Mouse interaction: Dispersion effect
     document.addEventListener('mousemove', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -122,17 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 const effectStrength = (interactionRadius - distance) / interactionRadius;
                 const depth = parseFloat(particle.dataset.depth);
 
-                const offsetX = dx * effectStrength * depth * 2; // Stronger dispersion for nearer particles
-                const offsetY = dy * effectStrength * depth * 2;
-
+                const acceleration = Math.pow(effectStrength, 1.5); // Smooth acceleration
+                const offsetX = dx * acceleration * depth * 2;
+                const offsetY = dy * acceleration * depth * 2;
+                particle.style.transition = 'transform 0.1s ease-out';
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             } else {
+                particle.style.transition = 'transform 0.3s ease-in';
                 particle.style.transform = '';
             }
         });
     });
 
-    // Mouse click interaction: Attraction effect
     document.addEventListener('click', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -149,27 +126,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (distance < interactionRadius) {
                 const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 0.5 + depth * 0.5; // Pull closer proportional to depth
+                const pullStrength = 0.4 + depth * 0.6; // Pull closer proportional to depth
                 const offsetX = dx * -pullStrength;
                 const offsetY = dy * -pullStrength;
 
-                particle.style.transition = 'left 0.3s ease, top 0.3s ease';
+                particle.style.transition = 'left 0.5s ease, top 0.5s ease';
                 particle.style.left = `${(mouseX / window.innerWidth) * 100}%`;
                 particle.style.top = `${(mouseY / window.innerHeight) * 100}%`;
                 particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             }
         });
 
-        // Reset positions quickly after 0.5s
+        // Reset positions after 1s
         setTimeout(() => {
             particles.forEach((particle) => {
+                particle.style.transition = 'transform 0.3s ease-in';
                 particle.style.transform = '';
             });
-        }, 500);
+        }, 1000);
     });
 
-    // Start with particles bundled and disperse them
-    disperseParticles();
+    updateParticles();
 });
 
 
