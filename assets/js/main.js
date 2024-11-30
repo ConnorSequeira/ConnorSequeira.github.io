@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (distance < interactionRadius) {
                 const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 0.4 + depth * 0.6; // Pull closer proportional to depth
+                const pullStrength = 0.4 + depth * 2; // Pull closer proportional to depth
                 const offsetX = dx * -pullStrength;
                 const offsetY = dy * -pullStrength;
 
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 particle.style.transition = 'transform 0.3s ease-in';
                 particle.style.transform = '';
             });
-        }, 1000);
+        }, 800);
     });
 
     updateParticles();
