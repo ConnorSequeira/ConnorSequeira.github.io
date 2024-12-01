@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         background.appendChild(particle);
     }
 // Trigger the burst effect
-burstParticles();
+//burstParticles();
 	
     function updateParticles() {
         particles.forEach((particle) => {
