@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('click', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
-        const interactionRadius = 150;
+        const interactionRadius = 200;
 
         particles.forEach((particle) => {
             const rect = particle.getBoundingClientRect();
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (distance < interactionRadius) {
                 const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 0.4 + depth * 2; // Pull closer proportional to depth
+                const pullStrength = 1 + depth * 2; // Pull closer proportional to depth
                 const offsetX = dx * -pullStrength;
                 const offsetY = dy * -pullStrength;
 
@@ -140,10 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Reset positions after 1s
         setTimeout(() => {
             particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.3s ease-in';
+                particle.style.transition = 'transform 0.2s ease-in';
                 particle.style.transform = '';
             });
-        }, 800);
+        }, 900);
     });
 
     updateParticles();
