@@ -108,7 +108,7 @@ burstParticles();
     document.addEventListener('click', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
-        const interactionRadius = 200;
+        const interactionRadius = 150;
 
         particles.forEach((particle) => {
             const rect = particle.getBoundingClientRect();
@@ -121,7 +121,7 @@ burstParticles();
 
             if (distance < interactionRadius) {
                 const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 1 + depth * 2; // Pull closer proportional to depth
+                const pullStrength = 5 + depth * 2; // Pull closer proportional to depth
                 const offsetX = dx * -pullStrength;
                 const offsetY = dy * -pullStrength;
 
