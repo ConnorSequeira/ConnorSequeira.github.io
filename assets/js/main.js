@@ -3,6 +3,28 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+function burstParticles() {
+    particles.forEach((particle) => {
+        // Set the initial position to the center of the screen
+        particle.style.top = "50vh";
+        particle.style.left = "50vw";
+
+        // Generate a random direction and speed for the burst
+        const angle = Math.random() * Math.PI * 2; // Random angle in radians
+        const speed = Math.random() * 20 + 10; // Random speed (10-30 vh/vw)
+        const depth = parseFloat(particle.dataset.depth);
+
+        // Calculate the target position based on the angle and speed
+        const offsetX = Math.cos(angle) * speed * (1 + depth);
+        const offsetY = Math.sin(angle) * speed * (1 + depth);
+
+        // Animate the particle to the target position
+        particle.style.transition = `top 0.7s ease-out, left 0.7s ease-out`;
+        particle.style.top = `calc(50vh + ${offsetY}vh)`;
+        particle.style.left = `calc(50vw + ${offsetX}vw)`;
+    });
+
+}
 
 (function($) {
 
@@ -62,7 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
         particles.push(particle);
         background.appendChild(particle);
     }
-
+// Trigger the burst effect
+burstParticles();
+	
     function updateParticles() {
         particles.forEach((particle) => {
             let x = parseFloat(particle.style.left);
@@ -80,36 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(updateParticles);
     }
 
-    document.addEventListener('mousemove', (event) => {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-        const interactionRadius = 150;
-
-        particles.forEach((particle) => {
-            const rect = particle.getBoundingClientRect();
-            const particleX = rect.left + rect.width / 2;
-            const particleY = rect.top + rect.height / 2;
-
-            const dx = particleX - mouseX;
-            const dy = particleY - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < interactionRadius) {
-                const effectStrength = (interactionRadius - distance) / interactionRadius;
-                const depth = parseFloat(particle.dataset.depth);
-
-                const acceleration = Math.pow(effectStrength, 1.5); // Smooth acceleration
-                const offsetX = dx * acceleration * depth * 2;
-                const offsetY = dy * acceleration * depth * 2;
-                particle.style.transition = 'transform 0.1s ease-out';
-                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            } else {
-                particle.style.transition = 'transform 0.3s ease-in';
-                particle.style.transform = '';
-            }
-        });
-    });
-
+   
     document.addEventListener('click', (event) => {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
