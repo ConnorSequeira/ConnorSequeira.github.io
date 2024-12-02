@@ -3,28 +3,6 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-function burstParticles() {
-    particles.forEach((particle) => {
-        // Set the initial position to the center of the screen
-        particle.style.top = "50vh";
-        particle.style.left = "50vw";
-
-        // Generate a random direction and speed for the burst
-        const angle = Math.random() * Math.PI * 2; // Random angle in radians
-        const speed = Math.random() * 20 + 10; // Random speed (10-30 vh/vw)
-        const depth = parseFloat(particle.dataset.depth);
-
-        // Calculate the target position based on the angle and speed
-        const offsetX = Math.cos(angle) * speed * (1 + depth);
-        const offsetY = Math.sin(angle) * speed * (1 + depth);
-
-        // Animate the particle to the target position
-        particle.style.transition = `top 0.7s ease-out, left 0.7s ease-out`;
-        particle.style.top = `calc(50vh + ${offsetY}vh)`;
-        particle.style.left = `calc(50vw + ${offsetX}vw)`;
-    });
-
-}
 
 (function($) {
 
@@ -52,97 +30,99 @@ function burstParticles() {
 				$body.removeClass('is-preload');
 			}, 100);
 		});
-//Particle interaction
-document.addEventListener("DOMContentLoaded", () => {
-    const background = document.querySelector('.background');
-    if (!background) {
-        console.error("Background container not found!");
-        return;
+// Add to script.js
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+const particleCount = 275;
+
+// Utility to create random numbers
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+// Particle class
+class Particle {
+    constructor(x, y) {
+        this.x = x || canvas.width / 2;
+        this.y = y || canvas.height / 2;
+        this.size = random(2, 5);
+        this.speedX = random(-1, 1);
+        this.speedY = random(-1, 1);
+        this.glow = `rgba(255, 255, 255, ${random(0.5, 1)})`;
     }
 
-    const particleCount = 250;
-    const particles = [];
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.glow;
+        ctx.fill();
+    }
 
-    // Helper for random values
-    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
 
-    // Create particles
+        // Wrap particles around the edges
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+}
+
+// Initialize particles
+function createParticles() {
     for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        const depth = Math.random();
-
-        particle.dataset.depth = depth;
-        particle.style.top = randomInRange(0, 100) + 'vh';
-        particle.style.left = randomInRange(0, 100) + 'vw';
-        particle.style.width = `${3 + depth * 4}px`;
-        particle.style.height = `${3 + depth * 4}px`;
-        particle.style.opacity = `${0.4 + depth * 0.6}`;
-        particle.dataset.speedX = randomInRange(-0.05, 0.05);
-        particle.dataset.speedY = randomInRange(-0.1, 0.1);
-
-        particles.push(particle);
-        background.appendChild(particle);
+        particles.push(new Particle());
     }
-// Trigger the burst effect
-//burstParticles();
-	
-    function updateParticles() {
-        particles.forEach((particle) => {
-            let x = parseFloat(particle.style.left);
-            let y = parseFloat(particle.style.top);
-            const depth = parseFloat(particle.dataset.depth);
-            const speedX = parseFloat(particle.dataset.speedX) * (1 + depth);
-            const speedY = parseFloat(particle.dataset.speedY) * (1 + depth);
+}
 
-            x = (x + speedX + 100) % 100; // Wrap horizontally
-            y = (y + speedY + 100) % 100; // Wrap vertically
+// Animate particles
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            particle.style.left = x + 'vw';
-            particle.style.top = y + 'vh';
-        });
-        requestAnimationFrame(updateParticles);
-    }
-
-   
-    document.addEventListener('click', (event) => {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-        const interactionRadius = 150;
-
-        particles.forEach((particle) => {
-            const rect = particle.getBoundingClientRect();
-            const particleX = rect.left + rect.width / 2;
-            const particleY = rect.top + rect.height / 2;
-
-            const dx = particleX - mouseX;
-            const dy = particleY - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < interactionRadius) {
-                const depth = parseFloat(particle.dataset.depth);
-                const pullStrength = 5 + depth * 2; // Pull closer proportional to depth
-                const offsetX = dx * -pullStrength;
-                const offsetY = dy * -pullStrength;
-
-                particle.style.transition = 'left 0.5s ease, top 0.5s ease';
-                particle.style.left = `${(mouseX / window.innerWidth) * 100}%`;
-                particle.style.top = `${(mouseY / window.innerHeight) * 100}%`;
-                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            }
-        });
-
-        // Reset positions after 1s
-        setTimeout(() => {
-            particles.forEach((particle) => {
-                particle.style.transition = 'transform 0.2s ease-in';
-                particle.style.transform = '';
-            });
-        }, 900);
+    particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
     });
 
-    updateParticles();
+    requestAnimationFrame(animateParticles);
+}
+
+// Burst effect on click
+canvas.addEventListener('click', (event) => {
+    const { clientX, clientY } = event;
+
+    particles.forEach((particle, index) => {
+        const dx = particle.x - clientX;
+        const dy = particle.y - clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 100) {
+            particle.speedX = dx * -0.1;
+            particle.speedY = dy * -0.1;
+
+            setTimeout(() => {
+                particles[index] = new Particle(clientX, clientY);
+            }, 200);
+        }
+    });
 });
+
+// Handle canvas resizing
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles.length = 0;
+    createParticles();
+});
+
+// Start animation
+createParticles();
+animateParticles();
+
 
 
 	// Fix: Flexbox min-height bug on IE.
