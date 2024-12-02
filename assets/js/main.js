@@ -67,6 +67,8 @@ class Particle {
         this.burstAcceleration = 0.1;
         this.distance = 0; // To simulate depth
         this.depthFactor = random(0.5, 1.5); // Particle depth variation
+        this.originalSpeedX = this.speedX; // Store original speed
+        this.originalSpeedY = this.speedY;
     }
 
     draw() {
@@ -150,6 +152,7 @@ canvas.addEventListener('mousedown', () => {
         if (distance < 150) { // Radius of effect
             particle.speedX = dx * 0.5; // Increase inward speed
             particle.speedY = dy * 0.5;
+            particle.isBursting = true; // Continue bursting during press
         }
     });
 });
@@ -166,6 +169,7 @@ canvas.addEventListener('mouseup', () => {
         if (distance < 150) {
             particle.speedX = -dx * 0.6; // Push particles outward
             particle.speedY = -dy * 0.6;
+            particle.isBursting = false; // End burst
         }
     });
 });
@@ -173,7 +177,6 @@ canvas.addEventListener('mouseup', () => {
 // Start particle animation
 createParticles();
 animateParticles();
-
 
 
 
