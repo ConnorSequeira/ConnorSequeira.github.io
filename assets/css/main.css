@@ -70,7 +70,7 @@ body {
 
 body.content-visible {
     display: block; /* Show the body content after the burst */
-    transition: opacity 1s ease-in-out; /* Smooth transition for visibility */
+    transition: opacity 5s ease-in-out; /* Smooth transition for visibility */
 }
 
 body {
