@@ -30,16 +30,20 @@
 				$body.removeClass('is-preload');
 			}, 100);
 		});
-// Add to script.js
+
+// Particle Animation Script
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
+
+// Set canvas dimensions
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const particles = [];
+// Particle settings
 const particleCount = 275;
+const particles = [];
 
-// Utility to create random numbers
+// Utility function: random value between min and max
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -50,9 +54,11 @@ class Particle {
         this.x = x || canvas.width / 2;
         this.y = y || canvas.height / 2;
         this.size = random(2, 5);
-        this.speedX = random(-1, 1);
-        this.speedY = random(-1, 1);
+        this.speedX = random(-2, 2);
+        this.speedY = random(-2, 2);
         this.glow = `rgba(255, 255, 255, ${random(0.5, 1)})`;
+        this.acceleration = 0.1; // Initial burst acceleration
+        this.isBursting = true; // Tracks the burst state
     }
 
     draw() {
@@ -63,17 +69,33 @@ class Particle {
     }
 
     update() {
+        if (this.isBursting) {
+            // Initial burst logic
+            this.speedX += random(-this.acceleration, this.acceleration);
+            this.speedY += random(-this.acceleration, this.acceleration);
+
+            // Slow particles down after burst
+            this.acceleration *= 0.98;
+            if (this.acceleration < 0.02) {
+                this.isBursting = false; // End burst phase
+            }
+        }
+
+        // Update position
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Wrap particles around the edges
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        // Screen wrapping
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
     }
 }
 
 // Initialize particles
 function createParticles() {
+    particles.length = 0; // Clear existing particles
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
@@ -82,41 +104,35 @@ function createParticles() {
 // Animate particles
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     particles.forEach((particle) => {
         particle.update();
         particle.draw();
     });
-
     requestAnimationFrame(animateParticles);
 }
 
-// Burst effect on click
+// Mouse click event: burst effect
 canvas.addEventListener('click', (event) => {
-    const { clientX, clientY } = event;
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
 
-    particles.forEach((particle, index) => {
-        const dx = particle.x - clientX;
-        const dy = particle.y - clientY;
+    particles.forEach((particle) => {
+        const dx = particle.x - mouseX;
+        const dy = particle.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 100) {
-            particle.speedX = dx * -0.1;
-            particle.speedY = dy * -0.1;
-
-            setTimeout(() => {
-                particles[index] = new Particle(clientX, clientY);
-            }, 200);
+        if (distance < 100) { // Adjust radius for effect
+            particle.speedX = -dx * 0.1;
+            particle.speedY = -dy * 0.1;
         }
     });
 });
 
-// Handle canvas resizing
+// Resize event to adjust canvas dimensions
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    particles.length = 0;
-    createParticles();
+    createParticles(); // Reinitialize particles
 });
 
 // Start animation
