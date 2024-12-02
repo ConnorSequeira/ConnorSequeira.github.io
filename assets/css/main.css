@@ -41,6 +41,16 @@ ol, ul {
   font-size: 500px;  /* Adjust the size as needed */
 }
 
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999; /* Ensure it's above other content */
+  pointer-events: none; /* Prevent interaction blocking */
+}
+
 .background {
     position: fixed;
     top: 0;
