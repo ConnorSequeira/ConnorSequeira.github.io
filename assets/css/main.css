@@ -56,12 +56,13 @@ ol, ul {
 body {
     margin: 0;
     overflow: hidden;
+    background-color: #000; /* Ensures a black background */
 }
 
 canvas {
     display: block;
-    background: #000;
 }
+
 
 .particle {
     filter: blur(4px);
