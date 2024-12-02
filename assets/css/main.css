@@ -66,6 +66,7 @@ ol, ul {
 
 body {
     display: none;
+    background: black;
 }
 
 body.content-visible {
