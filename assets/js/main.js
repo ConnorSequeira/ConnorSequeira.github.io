@@ -35,15 +35,21 @@
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas dimensions
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// Resize canvas to fit the screen
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
 // Particle settings
 const particleCount = 275;
 const particles = [];
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
 
-// Utility function: random value between min and max
+// Utility function to generate random values
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -51,41 +57,51 @@ function random(min, max) {
 // Particle class
 class Particle {
     constructor(x, y) {
-        this.x = x || canvas.width / 2;
-        this.y = y || canvas.height / 2;
-        this.size = random(2, 5);
-        this.speedX = random(-2, 2);
-        this.speedY = random(-2, 2);
+        this.x = x || centerX;
+        this.y = y || centerY;
+        this.size = random(2, 5); // Start with random size
+        this.speedX = random(-1, 1);
+        this.speedY = random(-1, 1);
         this.glow = `rgba(255, 255, 255, ${random(0.5, 1)})`;
-        this.acceleration = 0.1; // Initial burst acceleration
-        this.isBursting = true; // Tracks the burst state
+        this.isBursting = true;
+        this.burstAcceleration = 0.1;
+        this.distance = 0; // To simulate depth
+        this.depthFactor = random(0.5, 1.5); // Particle depth variation
     }
 
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        
+        // Adjust glow dynamically based on depth
+        this.glow = `rgba(255, 255, 255, ${Math.max(0.2, (1 / (this.distance + 1)) * 0.8)})`;
         ctx.fillStyle = this.glow;
         ctx.fill();
     }
 
     update() {
         if (this.isBursting) {
-            // Initial burst logic
-            this.speedX += random(-this.acceleration, this.acceleration);
-            this.speedY += random(-this.acceleration, this.acceleration);
+            this.speedX += random(-this.burstAcceleration, this.burstAcceleration);
+            this.speedY += random(-this.burstAcceleration, this.burstAcceleration);
+            this.burstAcceleration *= 0.98; // Slow down burst
 
-            // Slow particles down after burst
-            this.acceleration *= 0.98;
-            if (this.acceleration < 0.02) {
-                this.isBursting = false; // End burst phase
+            if (this.burstAcceleration < 0.02) {
+                this.isBursting = false; // End burst
             }
         }
 
-        // Update position
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Screen wrapping
+        // Simulate depth: Move in/out of the screen by adjusting size
+        this.distance = Math.sqrt(Math.pow(this.x - centerX, 2) + Math.pow(this.y - centerY, 2));
+        this.size = Math.max(2, this.size - this.distance / 150); // Shrink with distance
+
+        // Adjust speed based on depth factor (speed changes with depth)
+        this.speedX *= this.depthFactor;
+        this.speedY *= this.depthFactor;
+
+        // Wrap particles around screen edges
         if (this.x < 0) this.x = canvas.width;
         if (this.x > canvas.width) this.x = 0;
         if (this.y < 0) this.y = canvas.height;
@@ -95,7 +111,7 @@ class Particle {
 
 // Initialize particles
 function createParticles() {
-    particles.length = 0; // Clear existing particles
+    particles.length = 0;
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
@@ -111,33 +127,53 @@ function animateParticles() {
     requestAnimationFrame(animateParticles);
 }
 
-// Mouse click event: burst effect
-canvas.addEventListener('click', (event) => {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
+// Variables for controlling the mouse press
+let isMousePressed = false;
+let mouseX = 0;
+let mouseY = 0;
 
+// Update mouse position when the mouse moves
+canvas.addEventListener('mousemove', (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
+
+// Click event to create a burst effect when pressed
+canvas.addEventListener('mousedown', () => {
+    isMousePressed = true;
     particles.forEach((particle) => {
         const dx = particle.x - mouseX;
         const dy = particle.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 100) { // Adjust radius for effect
-            particle.speedX = -dx * 0.1;
-            particle.speedY = -dy * 0.1;
+        // Pull particles inward with high acceleration when the mouse is pressed
+        if (distance < 150) { // Radius of effect
+            particle.speedX = dx * 0.5; // Increase inward speed
+            particle.speedY = dy * 0.5;
         }
     });
 });
 
-// Resize event to adjust canvas dimensions
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    createParticles(); // Reinitialize particles
+// When the mouse is released, push particles outward with rapid acceleration
+canvas.addEventListener('mouseup', () => {
+    isMousePressed = false;
+    particles.forEach((particle) => {
+        const dx = particle.x - mouseX;
+        const dy = particle.y - mouseY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Push particles outward with rapid speed when the mouse is released
+        if (distance < 150) {
+            particle.speedX = -dx * 0.6; // Push particles outward
+            particle.speedY = -dy * 0.6;
+        }
+    });
 });
 
-// Start animation
+// Start particle animation
 createParticles();
 animateParticles();
+
 
 
 
