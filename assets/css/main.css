@@ -35,19 +35,8 @@ canvas {
     background: radial-gradient(circle, #111 20%, #000 80%);
 }
 
-body {
-    margin: 0;
-    overflow: hidden;
-}
-
-.particle {
-    filter: blur(4px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
 /* Your Original Content Styles (for context) */
 
-/* Add other styles as needed for your existing layout */
 .logo .icon.fas.fa-cogs {
     font-size: 500px;  /* Adjust the size as needed */
 }
