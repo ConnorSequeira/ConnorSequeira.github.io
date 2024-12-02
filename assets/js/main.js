@@ -4,7 +4,8 @@
     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-(function ($) {
+(function($) {
+
     var $window = $(window),
         $body = $('body'),
         $wrapper = $('#wrapper'),
@@ -24,8 +25,8 @@
     });
 
     // Play initial animations on page load.
-    $window.on('load', function () {
-        window.setTimeout(function () {
+    $window.on('load', function() {
+        window.setTimeout(function() {
             $body.removeClass('is-preload');
         }, 100);
     });
