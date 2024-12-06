@@ -90,7 +90,7 @@ ol, ul {
     }
     100% {
         transform: translate3d(calc(100vw * (var(--x))), calc(100vh * (var(--y))), var(--z)) scale(calc(var(--scale) * 6));
-        opacity: 2;
+        opacity: 1;
     }
 }
 
