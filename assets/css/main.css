@@ -41,15 +41,7 @@ ol, ul {
   font-size: 500px;  /* Adjust the size as needed */
 }
 
-#particleCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999; /* Ensure it's above other content */
-  pointer-events: none; /* Prevent interaction blocking */
-}
+
 
 .background {
     position: fixed;
@@ -64,31 +56,57 @@ ol, ul {
     z-index: -1;
 }
 
-body {
-    display: none;
-    background: black;
-}
-
-body.content-visible {
-    display: block; /* Show the body content after the burst */
-    transition: opacity 5s ease-in-out; /* Smooth transition for visibility */
-}
-
-body {
-    margin: 0;
+/* Orb Animation Container */
+#orb-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
     overflow: hidden;
-    background-color: #000; /* Ensures a black background */
+    z-index: 1000; /* Ensure it stays above all content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+/* Individual Orb Style */
+.orb {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: disperse 2s ease-out forwards;
+}
+
+/* Orb Dispersal Animation */
+@keyframes disperse {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(calc(100vw * (var(--x))), calc(100vh * (var(--y))), var(--z)) scale(var(--scale));
+        opacity: 0;
+    }
+}
+
+/* Screen Fade-In Effect */
+body.transition-complete {
+    background-color: white;
+}
+
+
+
 
 canvas {
     display: block;
 }
 
 
-.particle {
-    filter: blur(4px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
 
 blockquote, q {
 	quotes: none;
