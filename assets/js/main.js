@@ -42,10 +42,9 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// script.js
 
 // Function to create orbs
-function createOrb(x, y, z, scale) {
+function createOrb(x, y, z, scale, opacity) {
     const orb = document.createElement('div');
     orb.classList.add('orb');
 
@@ -54,6 +53,7 @@ function createOrb(x, y, z, scale) {
     orb.style.setProperty('--y', y); // Vertical direction
     orb.style.setProperty('--z', `${z}px`); // Depth
     orb.style.setProperty('--scale', scale); // Size scaling
+    orb.style.setProperty('--opacity', opacity); // Depth effect via opacity
 
     return orb;
 }
@@ -64,12 +64,13 @@ function startOrbAnimation() {
 
     // Generate multiple orbs
     for (let i = 0; i < 150; i++) {
-        const x = (Math.random() - 0.5) * 2; // Random between -1 and 1
-        const y = (Math.random() - 0.5) * 2; // Random between -1 and 1
-        const z = Math.random() * 500; // Depth effect
+        const x = (Math.random() - 0.5) * 4; // Spread particles farther horizontally
+        const y = (Math.random() - 0.5) * 4; // Spread particles farther vertically
+        const z = Math.random() * 800 - 400; // Depth effect, range from -400px to 400px
         const scale = Math.random() * 1.5 + 0.5; // Size variation
+        const opacity = Math.random() * 0.5 + 0.5; // Random opacity between 0.5 and 1
 
-        const orb = createOrb(x, y, z, scale);
+        const orb = createOrb(x, y, z, scale, opacity);
         orbContainer.appendChild(orb);
     }
 
@@ -90,6 +91,7 @@ setTimeout(() => {
     // Gradually transition the background to white
     document.querySelector('.background').style.backgroundColor = '#fff';
 }, 2000); // Ensure this matches the orb animation duration
+
 	
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
