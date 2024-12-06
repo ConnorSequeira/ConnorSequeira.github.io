@@ -31,17 +31,6 @@
 			}, 100);
 		});
 
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-
-// Resize canvas to fit the screen
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
 
 // Initialize canvas and context
 const canvas = document.getElementById('orb-canvas');
