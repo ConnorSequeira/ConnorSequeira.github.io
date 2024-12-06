@@ -79,17 +79,17 @@ ol, ul {
     background-color: white;
     border-radius: 50%;
     opacity: 0.8;
-    animation: disperse 5s ease-out forwards;
+    animation: disperse 8s ease-out forwards;
 }
 
 /* Orb Dispersal Animation */
 @keyframes disperse {
     0% {
         transform: translate3d(0, 0, 0) scale(1);
-        opacity: 0.8;
+        opacity: 0.4;
     }
     100% {
-        transform: translate3d(calc(100vw * (var(--x))), calc(100vh * (var(--y))), var(--z)) scale(calc(var(--scale) * 6));
+        transform: translate3d(calc(100vw * (var(--x))), calc(100vh * (var(--y))), var(--z)) scale(calc(var(--scale) * 25));
         opacity: 1;
     }
 }
