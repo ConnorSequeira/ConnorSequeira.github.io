@@ -42,172 +42,49 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Particle settings
-const particleCount = 275;
-const particles = [];
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
+// script.js
 
-// Utility function to generate random values
-function random(min, max) {
-    return Math.random() * (max - min) + min;
+// Function to create orbs
+function createOrb(x, y, z, scale) {
+    const orb = document.createElement('div');
+    orb.classList.add('orb');
+
+    // Set custom properties for each orb
+    orb.style.setProperty('--x', x); // Horizontal direction
+    orb.style.setProperty('--y', y); // Vertical direction
+    orb.style.setProperty('--z', `${z}px`); // Depth
+    orb.style.setProperty('--scale', scale); // Size scaling
+
+    return orb;
 }
 
-// Particle class for burst particles
-class Particle {
-    constructor(x, y, type = 'small') {
-        this.x = x || centerX;
-        this.y = y || centerY;
-        this.size = random(2, 5); // Start with random size
-        this.speedX = random(-1, 1);
-        this.speedY = random(-1, 1);
-        this.glow = `rgba(255, 255, 255, ${random(0.5, 1)})`;
-        this.isBursting = true;
-        this.burstAcceleration = 0.1;
-        this.distance = 0; // To simulate depth
-        this.depthFactor = random(0.5, 1.5); // Particle depth variation
-        this.originalSpeedX = this.speedX;
-        this.originalSpeedY = this.speedY;
-        this.type = type; // Type of particle: 'small' for burst, 'bubble' for large bubbles
-        this.maxSize = 5;
+// Function to initiate the animation
+function startOrbAnimation() {
+    const orbContainer = document.getElementById('orb-animation');
+
+    // Generate multiple orbs
+    for (let i = 0; i < 100; i++) {
+        const x = (Math.random() - 0.5) * 2; // Random between -1 and 1
+        const y = (Math.random() - 0.5) * 2; // Random between -1 and 1
+        const z = Math.random() * 500; // Depth effect
+        const scale = Math.random() * 1.5 + 0.5; // Size variation
+
+        const orb = createOrb(x, y, z, scale);
+        orbContainer.appendChild(orb);
     }
 
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    // Wait for the animation to finish
+    setTimeout(() => {
+        // Remove the orb animation container
+        orbContainer.style.display = 'none';
 
-        // Adjust glow dynamically based on depth
-        if (this.type === 'small') {
-            this.glow = `rgba(255, 255, 255, ${Math.max(0.2, (1 / (this.distance + 1)) * 0.8)})`;
-        } else if (this.type === 'bubble') {
-            this.glow = `rgba(0, 0, 0, 0.8)`; // Darker for bubbles
-        }
-        ctx.fillStyle = this.glow;
-        ctx.fill();
-    }
-
-    update() {
-        if (this.isBursting) {
-            this.speedX += random(-this.burstAcceleration, this.burstAcceleration);
-            this.speedY += random(-this.burstAcceleration, this.burstAcceleration);
-            this.burstAcceleration *= 0.98; // Slow down burst
-
-            if (this.burstAcceleration < 0.02) {
-                this.isBursting = false; // End burst
-            }
-        }
-
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        // Simulate depth: Move in/out of the screen by adjusting size
-        this.distance = Math.sqrt(Math.pow(this.x - centerX, 2) + Math.pow(this.y - centerY, 2));
-        if (this.type === 'small') {
-            this.size = Math.max(2, this.size - this.distance / 150); // Shrink with distance
-        } else if (this.type === 'bubble') {
-            this.size = Math.min(100, this.size + 0.5); // Bubbles grow larger
-        }
-
-        // Adjust speed based on depth factor (speed changes with depth)
-        this.speedX *= this.depthFactor;
-        this.speedY *= this.depthFactor;
-
-        // Wrap particles around screen edges
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-    }
+        // Show the main content
+        document.body.classList.add('transition-complete');
+    }, 2000); // Match the animation duration
 }
 
-// Initialize particles for burst
-function createBurstParticles() {
-    particles.length = 0;
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle(centerX, centerY, 'small'));
-    }
-}
-
-// Create black bubbles after burst effect
-function createBubbles() {
-    particles.length = 0;
-    for (let i = 0; i < 10; i++) { // Fewer bubbles for a floating effect
-        particles.push(new Particle(random(0, canvas.width), random(0, canvas.height), 'bubble'));
-    }
-}
-
-// Animate particles (burst and bubbles)
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
-    });
-
-    // Check if all burst particles have finished animating
-    if (particles.some(p => p.isBursting)) {
-        requestAnimationFrame(animateParticles);
-    } else {
-        // After burst animation is done, create bubbles
-        createBubbles();
-        // Continue animating bubbles
-        requestAnimationFrame(animateParticles);
-        // Trigger next animation/content on page
-        setTimeout(() => {
-            document.body.classList.add('content-visible'); // Trigger visibility for other content
-        }, 500); // Adjust time to match burst effect completion
-    }
-}
-
-// Start burst animation
-createBurstParticles();
-animateParticles();
-
-// Variables for controlling mouse press (for interaction)
-let isMousePressed = false;
-let mouseX = 0;
-let mouseY = 0;
-
-// Update mouse position when the mouse moves
-canvas.addEventListener('mousemove', (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-});
-
-// Click event to create a burst effect when pressed
-canvas.addEventListener('mousedown', () => {
-    isMousePressed = true;
-    particles.forEach((particle) => {
-        const dx = particle.x - mouseX;
-        const dy = particle.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // Pull particles inward with high acceleration when the mouse is pressed
-        if (distance < 150) {
-            particle.speedX = dx * 0.5; // Increase inward speed
-            particle.speedY = dy * 0.5;
-            particle.isBursting = true; // Continue bursting during press
-        }
-    });
-});
-
-// When the mouse is released, push particles outward with rapid acceleration
-canvas.addEventListener('mouseup', () => {
-    isMousePressed = false;
-    particles.forEach((particle) => {
-        const dx = particle.x - mouseX;
-        const dy = particle.y - mouseY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // Push particles outward with rapid speed when the mouse is released
-        if (distance < 150) {
-            particle.speedX = -dx * 0.6; // Push particles outward
-            particle.speedY = -dy * 0.6;
-            particle.isBursting = false; // End burst
-        }
-    });
-});
+// Start the animation when the page loads
+document.addEventListener('DOMContentLoaded', startOrbAnimation);
 
 
 	// Fix: Flexbox min-height bug on IE.
