@@ -43,54 +43,81 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 
-// Function to create orbs
-function createOrb(x, y, z, scale, opacity) {
-    const orb = document.createElement('div');
-    orb.classList.add('orb');
+// Initialize canvas and context
+const canvas = document.getElementById('orb-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    // Set custom properties for each orb
-    orb.style.setProperty('--x', x); // Horizontal direction
-    orb.style.setProperty('--y', y); // Vertical direction
-    orb.style.setProperty('--z', `${z}px`); // Depth
-    orb.style.setProperty('--scale', scale); // Size scaling
-    orb.style.setProperty('--opacity', opacity); // Depth effect via opacity
+// Array to store orb data
+const orbs = [];
 
-    return orb;
+// Function to create an orb
+function createOrb() {
+    return {
+        x: canvas.width / 2, // Start in the middle
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 4, // Horizontal velocity
+        vy: (Math.random() - 0.5) * 4, // Vertical velocity
+        scale: Math.random() * 1.5 + 0.5, // Size scaling
+        opacity: Math.random() * 0.5 + 0.5, // Random opacity
+        color: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.5})`, // Dynamic color with transparency
+    };
 }
 
-// Function to initiate the animation
-function startOrbAnimation() {
-    const orbContainer = document.getElementById('orb-animation');
+// Populate orbs array
+for (let i = 0; i < 150; i++) {
+    orbs.push(createOrb());
+}
 
-    // Generate multiple orbs
-    for (let i = 0; i < 150; i++) {
-        const x = (Math.random() - 0.5) * 4; // Spread particles farther horizontally
-        const y = (Math.random() - 0.5) * 4; // Spread particles farther vertically
-        const z = Math.random() * 800 - 400; // Depth effect, range from -400px to 400px
-        const scale = Math.random() * 1.5 + 0.5; // Size variation
-        const opacity = Math.random() * 0.5 + 0.5; // Random opacity between 0.5 and 1
+// Function to draw an orb
+function drawOrb(orb) {
+    ctx.beginPath();
+    ctx.arc(orb.x, orb.y, orb.scale * 2, 0, Math.PI * 2); // Draw the orb
+    ctx.fillStyle = orb.color;
+    ctx.shadowBlur = 15; // Add glow effect
+    ctx.shadowColor = orb.color;
+    ctx.fill();
+}
 
-        const orb = createOrb(x, y, z, scale, opacity);
-        orbContainer.appendChild(orb);
-    }
+// Animation function
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous frame
 
-    // Wait for the animation to finish
-    setTimeout(() => {
-        // Remove the orb animation container
-        orbContainer.style.display = 'none';
+    orbs.forEach((orb) => {
+        // Update position
+        orb.x += orb.vx;
+        orb.y += orb.vy;
 
-        // Show the main content
-        document.body.classList.add('transition-complete');
-    }, 7000); // Match the animation duration
+        // Apply random scaling
+        orb.scale *= 1.01;
+
+        // Draw the orb
+        drawOrb(orb);
+    });
+
+    requestAnimationFrame(animate); // Repeat animation
 }
 
 // Start the animation when the page loads
-document.addEventListener('DOMContentLoaded', startOrbAnimation);
+document.addEventListener('DOMContentLoaded', () => {
+    animate();
 
-setTimeout(() => {
-    // Gradually transition the background to white
-    document.querySelector('.background').style.backgroundColor = '#fff';
-}, 2000); // Ensure this matches the orb animation duration
+    setTimeout(() => {
+        // Hide canvas and transition background
+        const orbContainer = document.getElementById('orb-animation');
+        orbContainer.style.display = 'none';
+
+        // Transition to white background
+        document.body.classList.add('transition-complete');
+    }, 7000); // Match animation duration
+});
+
+// Handle canvas resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 
 	
 	// Fix: Flexbox min-height bug on IE.
