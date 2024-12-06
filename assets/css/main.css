@@ -79,7 +79,7 @@ ol, ul {
     background-color: white;
     border-radius: 50%;
     opacity: 0.8;
-    animation: disperse 8s ease-out forwards;
+    animation: disperse 5.5s ease-out forwards;
 }
 
 /* Orb Dispersal Animation */
