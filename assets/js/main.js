@@ -63,7 +63,7 @@ function startOrbAnimation() {
     const orbContainer = document.getElementById('orb-animation');
 
     // Generate multiple orbs
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 150; i++) {
         const x = (Math.random() - 0.5) * 2; // Random between -1 and 1
         const y = (Math.random() - 0.5) * 2; // Random between -1 and 1
         const z = Math.random() * 500; // Depth effect
@@ -80,7 +80,7 @@ function startOrbAnimation() {
 
         // Show the main content
         document.body.classList.add('transition-complete');
-    }, 2000); // Match the animation duration
+    }, 7000); // Match the animation duration
 }
 
 // Start the animation when the page loads
