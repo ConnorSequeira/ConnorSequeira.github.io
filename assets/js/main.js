@@ -63,7 +63,7 @@ function startOrbAnimation() {
     const orbContainer = document.getElementById('orb-animation');
 
     // Generate multiple orbs
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 300; i++) {
         const x = (Math.random() - 0.5) * 2; // Random between -1 and 1
         const y = (Math.random() - 0.5) * 2; // Random between -1 and 1
         const z = Math.random() * 500; // Depth effect
