@@ -86,7 +86,11 @@ function startOrbAnimation() {
 // Start the animation when the page loads
 document.addEventListener('DOMContentLoaded', startOrbAnimation);
 
-
+setTimeout(() => {
+    // Gradually transition the background to white
+    document.querySelector('.background').style.backgroundColor = '#fff';
+}, 2000); // Ensure this matches the orb animation duration
+	
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
 
