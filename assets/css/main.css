@@ -79,6 +79,14 @@ ol, ul {
 }
 
 
+body {
+    transition: background-color 5s ease-in-out;
+    background-color: black; /* Initial color */
+}
+
+body.transition-complete {
+    background-color: white; /* Final color */
+}
 
 
 canvas {
