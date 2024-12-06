@@ -92,15 +92,10 @@ function animate() {
 document.addEventListener('DOMContentLoaded', () => {
     animate();
 
-    setTimeout(() => {
-        // Hide canvas and transition background
-        const orbContainer = document.getElementById('orb-animation');
-        orbContainer.style.display = 'none';
-
-        // Transition to white background
-        document.body.classList.add('transition-complete');
-    }, 7000); // Match animation duration
-});
+ setTimeout(() => {
+    // Gradually transition the background to white
+    document.querySelector('.background').style.backgroundColor = '#fff';
+}, 2000);
 
 // Handle canvas resize
 window.addEventListener('resize', () => {
