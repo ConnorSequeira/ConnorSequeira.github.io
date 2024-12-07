@@ -32,7 +32,7 @@
 		});
 
 
-// Initialize canvas and context
+/*// Initialize canvas and context
 const canvas = document.getElementById('orb-canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -103,7 +103,7 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-	
+*/	
 	// Fix: Flexbox min-height bug on IE.
 		if (browser.name == 'ie') {
 
