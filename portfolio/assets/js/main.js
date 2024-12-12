@@ -208,33 +208,38 @@
 
 	// Main.
 		var $main = $('#main');
+// Thumbs.
+$main.children('.thumb').each(function () {
 
-					// Thumbs.
-			$main.children('.thumb').each(function() {
-			    var $this = $(this),
-				$image = $this.find('.image'), 
-				$image_img = $image.children('img'),
-				x;
-			
-			    // No image? Bail.
-			    if ($image.length == 0)
-				return;
-			
-			    // Check if the <a> href points to a video file.
-			    var isVideo = $image.parent('a').attr('href').endsWith('.mp4');
-			
-			    if (!isVideo) {
-				// Original image logic.
-				$image.css('background-image', 'url(' + $image_img.attr('src') + ')');
-			
-				// Set background position.
-				if (x = $image_img.data('position'))
-				    $image.css('background-position', x);
-			
-				// Hide original img.
-				$image_img.hide();
-			    }
-			});
+    var $this = $(this),
+        $image = $this.find('.image'),
+        $image_img = $image.children('img'),
+        href = $this.find('a').attr('href'),
+        x;
+
+    // No image? Bail.
+    if ($image.length == 0) return;
+
+    // Image or video.
+    // This sets the background of the "image" <span> to the image pointed to by its child
+    // <img> (which is then hidden). Gives us way more flexibility.
+
+    if (href.endsWith('.mp4')) {
+        // Handle video thumbnail background using the <img> as a placeholder.
+        $image.css('background-image', 'url(' + $image_img.attr('src') + ')');
+    } else {
+        // Handle image thumbnail background.
+        $image.css('background-image', 'url(' + $image_img.attr('src') + ')');
+    }
+
+    // Set background position.
+    if (x = $image_img.data('position'))
+        $image.css('background-position', x);
+
+    // Hide the original img.
+    $image_img.hide();
+});
+
 
 
 		// Poptrox.
