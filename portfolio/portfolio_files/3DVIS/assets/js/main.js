@@ -205,6 +205,22 @@
 				breakpoints.on('>medium', on);
 
 			});
+	
+			// Ensure the video is loaded and controls are visible
+			$(document).ready(function() {
+			    var video = $('#demoVideo');
+			
+			    // Check if video exists
+			    if (video.length > 0) {
+				video.on('loadeddata', function() {
+				    console.log('Video loaded successfully.');
+				});
+			
+				video.on('error', function() {
+				    console.error('Error loading video.');
+				});
+			    }
+			});
 
 	// Wrappers.
 		var $wrappers = $('.wrapper');
