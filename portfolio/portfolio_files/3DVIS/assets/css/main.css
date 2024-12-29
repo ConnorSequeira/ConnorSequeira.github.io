@@ -2564,6 +2564,22 @@ input, select, textarea {
 				width: 100%;
 			}
 
+/* Video */
+		.video.fit.main video {
+		    width: 100%; /* Make the video responsive */
+		    height: auto; /* Maintain the aspect ratio */
+		    display: block; /* Ensure proper layout behavior */
+		    border-radius: 4px; /* Match the image's rounded corners */
+		    position: relative; /* Align with image positioning */
+		    z-index: 0; /* Ensure correct stacking */
+		}
+		
+		.video.fit.main {
+		    display: block;
+		    position: relative;
+		    overflow: hidden; /* Ensure the video stays within its container */
+		    border-radius: 4px; /* Match the image's rounded corners */
+		}
 /* List */
 
 	ol {
