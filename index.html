@@ -285,51 +285,51 @@ print 'it took ' + i + ' iterations to sort the deck.';</code></pre>
 
 								<section>
 									<h3 class="major">Form</h3>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="demo-name">Name</label>
-												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
-											</div>
-											<div class="field half">
-												<label for="demo-email">Email</label>
-												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
-											</div>
-											<div class="field">
-												<label for="demo-category">Category</label>
-												<select name="demo-category" id="demo-category">
-													<option value="">-</option>
-													<option value="1">Manufacturing</option>
-													<option value="1">Shipping</option>
-													<option value="1">Administration</option>
-													<option value="1">Human Resources</option>
-												</select>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-												<label for="demo-priority-low">Low</label>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-high" name="demo-priority">
-												<label for="demo-priority-high">High</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-copy" name="demo-copy">
-												<label for="demo-copy">Email me a copy</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-human" name="demo-human" checked>
-												<label for="demo-human">Not a robot</label>
-											</div>
-											<div class="field">
-												<label for="demo-message">Message</label>
-												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Send Message" class="primary" /></li>
-											<li><input type="reset" value="Reset" /></li>
-										</ul>
+									<form method="post" action="https://formspree.io/f/YOUR_FORM_ID">
+									    <div class="fields">
+									        <div class="field half">
+									            <label for="demo-name">Name</label>
+									            <input type="text" name="name" id="demo-name" placeholder="Jane Doe" required />
+									        </div>
+									        <div class="field half">
+									            <label for="demo-email">Email</label>
+									            <input type="email" name="email" id="demo-email" placeholder="jane@untitled.tld" required />
+									        </div>
+									        <div class="field">
+									            <label for="demo-category">Category</label>
+									            <select name="category" id="demo-category" required>
+									                <option value="">-</option>
+									                <option value="Manufacturing">Manufacturing</option>
+									                <option value="Shipping">Shipping</option>
+									                <option value="Administration">Administration</option>
+									                <option value="Human Resources">Human Resources</option>
+									            </select>
+									        </div>
+									        <div class="field half">
+									            <input type="radio" id="demo-priority-low" name="priority" value="Low" checked>
+									            <label for="demo-priority-low">Low</label>
+									        </div>
+									        <div class="field half">
+									            <input type="radio" id="demo-priority-high" name="priority" value="High">
+									            <label for="demo-priority-high">High</label>
+									        </div>
+									        <div class="field half">
+									            <input type="checkbox" id="demo-copy" name="copy">
+									            <label for="demo-copy">Email me a copy</label>
+									        </div>
+									        <div class="field half">
+									            <input type="checkbox" id="demo-human" name="human" checked>
+									            <label for="demo-human">Not a robot</label>
+									        </div>
+									        <div class="field">
+									            <label for="demo-message">Message</label>
+									            <textarea name="message" id="demo-message" placeholder="Enter your message" rows="6" required></textarea>
+									        </div>
+									    </div>
+									    <ul class="actions">
+									        <li><input type="submit" value="Send Message" class="primary" /></li>
+									        <li><input type="reset" value="Reset" /></li>
+									    </ul>
 									</form>
 								</section>
 
