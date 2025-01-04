@@ -45,6 +45,7 @@ blockquote, q {
 		content: '';
 		content: none;
 	}
+
 #scroll-video {
     position: absolute;
     top: 0;
@@ -53,6 +54,15 @@ blockquote, q {
     height: 100%;
     object-fit: cover; /* Ensures the video covers the screen without distortion */
 }
+
+section {
+    position: relative; /* Enables absolute positioning of the video within this section */
+    height: 100vh; /* Ensures the section takes up the full height of the viewport */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Hide overflow to avoid scrollbars */
+}
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
