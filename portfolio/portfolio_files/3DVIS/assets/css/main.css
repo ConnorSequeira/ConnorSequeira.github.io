@@ -647,6 +647,24 @@ input, select, textarea {
 
 	}
 
+body {
+    margin: 0;
+    min-height: 100%;
+    width: 100%;
+    background: #0a0a0a;
+    overflow-x: hidden; /* Prevents horizontal scrolling if needed */
+}
+
+#constellation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
 /* Container */
 
 	.container {
