@@ -37,11 +37,14 @@ ol, ul {
 	list-style: none;
 }
 
-.logo .icon.fas.fa-cogs {
-  font-size: 500px;  /* Adjust the size as needed */
+.logo {
+    font-size: 5vw;       /* Size is 5% of the viewport width */
+    margin-top: 2vh;      /* Top margin is 2% of the viewport height */
+    margin-right: 2vw;    /* Right margin is 2% of the viewport width */
+    display: inline-block;
+    position: relative;   /* Allows for more advanced positioning if needed */
+    vertical-align: middle;
 }
-
-
 
 .background {
     position: fixed;
