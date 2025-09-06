@@ -1342,23 +1342,40 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 736px) {
-	.poptrox-popup:before {
-		display: none; /* keep this if you don't want the dark gradient overlay */
-	}
+	@media screen and (max-width: 736px) {
 
-	/* Allow captions and controls to stay visible */
-	.poptrox-popup .caption {
-		display: block !important;
-	}
+  /* Keep gradient overlay disabled on mobile (optional) */
+  .poptrox-popup:before {
+    display: none;
+  }
 
-	.poptrox-popup .closer,
-	.poptrox-popup .nav-previous,
-	.poptrox-popup .nav-next {
-		display: block !important;
-		opacity: 1 !important; /* make sure they're clickable */
-	}
+  /* Show caption text like desktop */
+  .poptrox-popup .caption {
+    display: block !important;
+    font-size: 0.9em;   /* slightly smaller for mobile */
+    padding: 1em;       /* reduce padding */
+  }
+
+  /* Show closer button */
+  .poptrox-popup .closer {
+    display: block !important;
+    opacity: 1 !important;
+    background-size: 2em;  /* smaller than tablet */
+    width: 3em;
+    height: 3em;
+  }
+
+  /* Show nav arrows */
+  .poptrox-popup .nav-previous,
+  .poptrox-popup .nav-next {
+    display: block !important;
+    opacity: 1 !important;
+    background-size: 3em; /* smaller than tablet */
+    width: 4em;
+    height: 6em;
+  }
 }
+
 
 /* Wrapper */
 
@@ -2047,5 +2064,6 @@ input, select, textarea {
 		#footer .copyright a {
 			color: inherit;
 		}
+
 
 
