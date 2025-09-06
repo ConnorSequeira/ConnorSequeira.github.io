@@ -1343,22 +1343,22 @@ input, select, textarea {
 		}
 
 		@media screen and (max-width: 736px) {
+	.poptrox-popup:before {
+		display: none; /* keep this if you don't want the dark gradient overlay */
+	}
 
-			.poptrox-popup:before {
-				display: none;
-			}
+	/* Allow captions and controls to stay visible */
+	.poptrox-popup .caption {
+		display: block !important;
+	}
 
-			.poptrox-popup .caption {
-				display: none !important;
-			}
-
-			.poptrox-popup .closer,
-			.poptrox-popup .nav-previous,
-			.poptrox-popup .nav-next {
-				display: none !important;
-			}
-
-		}
+	.poptrox-popup .closer,
+	.poptrox-popup .nav-previous,
+	.poptrox-popup .nav-next {
+		display: block !important;
+		opacity: 1 !important; /* make sure they're clickable */
+	}
+}
 
 /* Wrapper */
 
@@ -2047,4 +2047,5 @@ input, select, textarea {
 		#footer .copyright a {
 			color: inherit;
 		}
+
 
