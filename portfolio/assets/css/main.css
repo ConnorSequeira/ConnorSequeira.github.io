@@ -234,6 +234,7 @@ input, select, textarea {
 		margin: 0 0 2em 0;
 	}
 
+
 	h1, h2, h3, h4, h5, h6 {
 		color: #ffffff;
 		font-weight: 300;
@@ -242,7 +243,14 @@ input, select, textarea {
 		margin: 0 0 1em 0;
 		text-transform: uppercase;
 	}
-
+	
+	h1, h2, h3 {
+	  background-color: black;   /* black highlight */
+	  color: white;              /* text color so it shows on black */
+	  display: inline-block;     /* makes background wrap tight around text */
+	  padding: 0.2em 0.4em;      /* spacing inside the highlight */
+	  border-radius: 4px;        /* optional rounded corners */
+	}
 		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 			color: inherit;
 			text-decoration: none;
@@ -2064,6 +2072,7 @@ input, select, textarea {
 		#footer .copyright a {
 			color: inherit;
 		}
+
 
 
 
