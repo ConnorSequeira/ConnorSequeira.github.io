@@ -1682,6 +1682,13 @@ input, select, textarea {
 				display: none;
 			}
 
+			.thumb {
+			  border: 3px solid black;
+			  border-radius: 8px;
+			  padding: 10px;    /* adds space inside border */
+			  margin: 10px;     /* space between tiles */
+			}
+
 		#main:after {
 			pointer-events: none;
 			-moz-transition: opacity 0.5s ease, visibility 0.5s;
@@ -2072,6 +2079,7 @@ input, select, textarea {
 		#footer .copyright a {
 			color: inherit;
 		}
+
 
 
 
