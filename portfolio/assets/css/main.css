@@ -1683,9 +1683,9 @@ input, select, textarea {
 			}
 
 			.thumb {
-			  border: 3px solid black;
-			  border-radius: 8px;
-			  padding: 10px;    /* adds space inside border */  
+			  border: 5px solid black;
+			  padding: 10px;   
+				margin: 1px;
 			}
 
 		#main:after {
@@ -2078,6 +2078,7 @@ input, select, textarea {
 		#footer .copyright a {
 			color: inherit;
 		}
+
 
 
 
