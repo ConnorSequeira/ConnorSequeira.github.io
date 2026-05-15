@@ -839,7 +839,7 @@
           { src: "images/door_opening.png", label: "Door opening" },
           { src: "images/door_open.png", label: "Door open" }
         ],
-        repoUrl: "",
+        repoUrl: "https://github.com/ConnorSequeira/arduino-smart-garage-door-opener",
         summary: "Arduino-powered miniature garage door opener that detects a waiting car, moves through closed, opening, and open states, and shows live LCD and LED feedback.",
         problem: "I wanted to turn a beginner Arduino sensor circuit into a complete automation-style project that behaves like a real access system instead of just reading distance values.",
         built: "I built a small garage door prototype using an ultrasonic sensor to detect a car, a servo-controlled door to simulate opening and closing, a 16x2 LCD for live messages, and three status LEDs for closed, moving, and open states. The logic waits for a stable car detection, opens the door, gives the driver a green-enter state, then can return to closed after the vehicle clears.",
@@ -855,7 +855,7 @@
         status: "Completed",
         skills: ["Python", "PyTorch", "CNN", "Gradio", "Computer Vision", "MNIST"],
         image: "images/digit_app.png",
-        repoUrl: "",
+        repoUrl: "https://github.com/ConnorSequeira/handwritten-digit-recognition-pytorch",
         summary: "Interactive PyTorch app that classifies single handwritten digits from 0 to 9 using a CNN trained on the MNIST dataset.",
         problem: "I wanted to build a beginner-friendly machine learning project that went beyond training a common MNIST model by turning it into a usable app with real-time drawing input.",
         built: "I trained a convolutional neural network in PyTorch on MNIST, saved the trained model, and built a Gradio interface where users can draw a digit. The app preprocesses the drawing by converting it to grayscale, inverting it, cropping and centering the digit, resizing it to 28x28, and normalizing it before sending it into the model.",
