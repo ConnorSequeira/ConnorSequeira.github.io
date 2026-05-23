@@ -1,10 +1,10 @@
-# Project Pages
+# Legacy Project Pages
 
-This directory contains standalone project pages for the portfolio gallery.
+This directory contains standalone project pages from an older version of the portfolio. These files are kept for reference, but the current main portfolio no longer uses the `portfolio_files` section as the active project system.
 
-Each project folder is self-contained and includes its own `index.html`, project media, and local template assets. The existing `README.txt` and `LICENSE.txt` files are from the HTML5 UP templates used to build these pages.
+Each project folder is self-contained and includes its own `index.html`, project media, and local template assets. The existing `README.txt` and `LICENSE.txt` files are from the HTML5 UP templates used to build these older pages.
 
-## Current Project Folders
+## Legacy Project Folders
 
 - `3DVIS` - 3D vision project page.
 - `AIVIS` - AI vision project page.
@@ -16,7 +16,6 @@ Each project folder is self-contained and includes its own `index.html`, project
 
 ## Maintenance Notes
 
-- Keep project-specific media inside that project's `images/` folder.
-- If a project page no longer needs a template page such as `left-sidebar.html`, `right-sidebar.html`, `no-sidebar.html`, or `elements.html`, confirm it is not linked before deleting it.
-- Search for a filename before removing media, because some template example pages still reference shared demo images.
-
+- Do not treat this folder as the active source for new portfolio updates.
+- Keep it only as a reference archive unless there is a specific reason to restore one of the older project pages.
+- If this folder is removed later, first confirm no live links still point into `portfolio/portfolio_files/`.
